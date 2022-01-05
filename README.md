@@ -12,4 +12,6 @@ replace the date with 'DATE' string and export them using the plugin, the 'DATE'
 /Screens/Green/English/DATE/screen_01 -> /Screens/Green/English/2022-01-05/screen_01
 ```
 
+### This plugin was created using Flat Export plugin which you can download in [here](https://github.com/TheSonOfThomp/sketch-flat-export)
+
 #### Enjoy!
