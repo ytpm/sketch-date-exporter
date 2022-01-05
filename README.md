@@ -4,9 +4,13 @@
 
 #### Usage Example:
 Let's say you have multiple artboards and old or new versions named:
+```bash
 /Screens/Green/English/2022-01-05/screen_01
+```
 replace the date with 'DATE' string and export them using the plugin, the 'DATE' string will be automatically replaced by today's date, to:
+```bash
 /Screens/Green/English/DATE/screen_01 -> /Screens/Green/English/2022-01-05/screen_01
+```
 
 Enjoy!
 
