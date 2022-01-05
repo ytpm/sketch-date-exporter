@@ -126,6 +126,16 @@ var DIALOG_ELEMENTS = [{
   id: 'selectFormat',
   value: ['png', 'jpg'],
   paddingBottom: 8
+}, {
+  type: 'label',
+  id: 'dateFormat',
+  value: 'Date Format:',
+  paddingBottom: -2
+}, {
+  type: 'select',
+  id: 'selectDateFormat',
+  value: ['yyyy-mm-dd', 'yy-mm-dd'],
+  paddingBottom: 8
 }];
 var viewContents = null; //  Create custom dialog
 
@@ -166,15 +176,9 @@ function createDialog(previousSettings) {
     }
 
     if (typeof previousSetting !== 'undefined') {
-      if (element.id == 'selectCase') {
-        UIElement.selectItemWithTitle(previousSetting.selectCase);
-      } else if (element.id == 'fullName') {
-        UIElement.setEnabled(previousSetting.useFullName);
-      } else if (element.id == 'prefix') {
-        UIElement.setStringValue(previousSetting.prefix);
-      } else if (element.id == 'selectFormat') {
+      if (element.id == 'selectFormat') {
         UIElement.selectItemWithTitle(previousSetting.selectFormat);
-      } else if (element.id == 'selectScale') {
+      } else if (element.id == 'selectDateFormat') {
         UIElement.selectItemWithTitle(previousSetting.selectScale);
       }
     }
@@ -321,12 +325,17 @@ var PREFS_KEY = "previous_settings"; // ----------------------------------------
     } else {
       var formatElemIdx = _dialog__WEBPACK_IMPORTED_MODULE_2__["DIALOG_ELEMENTS"].findIndex(function (elem) {
         return elem.id === 'selectFormat';
+      });
+      var dateFormatElemIdx = _dialog__WEBPACK_IMPORTED_MODULE_2__["DIALOG_ELEMENTS"].findIndex(function (elem) {
+        return elem.id === 'selectDateFormat';
       }); // Save the responses from that modal
 
-      var formatvalueIndex = _dialog__WEBPACK_IMPORTED_MODULE_2__["viewContents"][formatElemIdx].indexOfSelectedItem(); // Save user settings
+      var formatValueIndex = _dialog__WEBPACK_IMPORTED_MODULE_2__["viewContents"][formatElemIdx].indexOfSelectedItem();
+      var dateFormatValueIndex = _dialog__WEBPACK_IMPORTED_MODULE_2__["viewContents"][dateFormatElemIdx].indexOfSelectedItem(); // Save user settings
 
       var prefs = {
-        "selectFormat": _dialog__WEBPACK_IMPORTED_MODULE_2__["DIALOG_ELEMENTS"][formatElemIdx].value[formatvalueIndex]
+        "selectFormat": _dialog__WEBPACK_IMPORTED_MODULE_2__["DIALOG_ELEMENTS"][formatElemIdx].value[formatValueIndex],
+        "selectDateFormat": _dialog__WEBPACK_IMPORTED_MODULE_2__["DIALOG_ELEMENTS"][dateFormatElemIdx].value[dateFormatValueIndex]
       };
       sketch_settings__WEBPACK_IMPORTED_MODULE_1___default.a.setSettingForKey(PREFS_KEY, prefs); // Create an Open dialog
 
@@ -343,11 +352,13 @@ var PREFS_KEY = "previous_settings"; // ----------------------------------------
           return layer.name;
         }); // Get the selected file format
 
-        var fileFormat = _dialog__WEBPACK_IMPORTED_MODULE_2__["DIALOG_ELEMENTS"][formatElemIdx].value[formatvalueIndex]; // Change the file names appropriately
+        var fileFormat = _dialog__WEBPACK_IMPORTED_MODULE_2__["DIALOG_ELEMENTS"][formatElemIdx].value[formatValueIndex]; // Change the file names appropriately
 
         selectedLayers.forEach(function (layer) {
-          //  Replace 'DATE' with current date
-          layer.name = Object(_utils__WEBPACK_IMPORTED_MODULE_3__["replaceDate"])(layer.name);
+          var replaceDateFormat = _dialog__WEBPACK_IMPORTED_MODULE_2__["DIALOG_ELEMENTS"][dateFormatElemIdx].value[dateFormatValueIndex]; //  Replace 'DATE' with current date
+
+          var layerName = Object(_utils__WEBPACK_IMPORTED_MODULE_3__["replaceDate"])(layer.name, replaceDateFormat);
+          layer.name = layerName;
         }); // Set the format and save path
 
         var exportOptions = {
@@ -382,17 +393,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "replaceDate", function() { return replaceDate; });
 /* harmony import */ var _dialog__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dialog */ "./src/dialog.js");
 
-function replaceDate(str) {
+function replaceDate(str, format) {
   if (typeof str !== 'string') return "";
-  str = str.replace(_dialog__WEBPACK_IMPORTED_MODULE_0__["DIALOG_REPLACE_WORD"], formattedDate());
+  str = str.replace(_dialog__WEBPACK_IMPORTED_MODULE_0__["DIALOG_REPLACE_WORD"], formattedDate(format));
   return str;
 }
 
-function formattedDate() {
+function formattedDate(format) {
   var today = new Date();
   var dd = today.getDate();
-  var mm = today.getMonth() + 1;
-  var yyyy = today.getFullYear();
+  var mm = today.getMonth() + 1; //  4 digits year format
+
+  var yyyy = today.getFullYear(); //  2 digits year format
+
+  if (format === 'yy-mm-dd') {
+    yyyy = today.getFullYear().toString().substring(2);
+  }
 
   if (dd < 10) {
     dd = '0' + dd;

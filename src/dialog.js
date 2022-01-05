@@ -27,6 +27,18 @@ const DIALOG_ELEMENTS = [
         id: 'selectFormat',
         value: ['png', 'jpg'],
         paddingBottom: 8
+    },
+    {
+        type: 'label',
+        id: 'dateFormat',
+        value: 'Date Format:',
+        paddingBottom: -2
+    },
+    {
+        type: 'select',
+        id: 'selectDateFormat',
+        value: ['yyyy-mm-dd', 'yy-mm-dd'],
+        paddingBottom: 8
     }
 ]
 
@@ -58,7 +70,7 @@ function createDialog(previousSettings) {
         if (type == 'label') {
         UIElement = createLabel(NSMakeRect(0, yPos, 200, ELEMENT_HEIGHT), 12, false, element.value);
         } else if (type == 'select') {
-        UIElement = createSelect(NSMakeRect(0, yPos, 200, ELEMENT_HEIGHT), element.value)
+        UIElement = createSelect(NSMakeRect(0, yPos, 200, ELEMENT_HEIGHT), element.value);
         } else if (type == 'checkbox') {
         UIElement = createCheckbox(NSMakeRect(0, yPos, 200, ELEMENT_HEIGHT), element.label, element.value, element.default, true);
         } else if (type == 'text') {
@@ -71,15 +83,9 @@ function createDialog(previousSettings) {
         }
 
         if (typeof previousSetting !== 'undefined') {
-            if (element.id == 'selectCase') {
-                UIElement.selectItemWithTitle(previousSetting.selectCase)
-            } else if (element.id == 'fullName') {
-                UIElement.setEnabled(previousSetting.useFullName)
-            } else if (element.id == 'prefix') {
-                UIElement.setStringValue(previousSetting.prefix)
-            } else if (element.id == 'selectFormat') {
+            if (element.id == 'selectFormat') {
                 UIElement.selectItemWithTitle(previousSetting.selectFormat)
-            } else if (element.id == 'selectScale') {
+            } else if (element.id == 'selectDateFormat') {
                 UIElement.selectItemWithTitle(previousSetting.selectScale)
             }
         }

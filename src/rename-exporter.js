@@ -34,13 +34,16 @@ export default function(context) {
         return
       } else {
         const formatElemIdx = DIALOG_ELEMENTS.findIndex(elem => elem.id === 'selectFormat')
+        const dateFormatElemIdx = DIALOG_ELEMENTS.findIndex(elem => elem.id === 'selectDateFormat')
 
         // Save the responses from that modal
-        const formatvalueIndex = viewContents[formatElemIdx].indexOfSelectedItem();
-          
+        const formatValueIndex = viewContents[formatElemIdx].indexOfSelectedItem();
+        const dateFormatValueIndex = viewContents[dateFormatElemIdx].indexOfSelectedItem();
+
         // Save user settings
         let prefs = {
-          "selectFormat": DIALOG_ELEMENTS[formatElemIdx].value[formatvalueIndex],
+          "selectFormat": DIALOG_ELEMENTS[formatElemIdx].value[formatValueIndex],
+          "selectDateFormat": DIALOG_ELEMENTS[dateFormatElemIdx].value[dateFormatValueIndex],
         }
         settings.setSettingForKey(PREFS_KEY, prefs)
   
@@ -59,13 +62,16 @@ export default function(context) {
           const originalLayerNames = selectedLayers.map(layer => layer.name)
       
           // Get the selected file format
-          const fileFormat = DIALOG_ELEMENTS[formatElemIdx].value[formatvalueIndex]
+          const fileFormat = DIALOG_ELEMENTS[formatElemIdx].value[formatValueIndex]
         
           // Change the file names appropriately
           selectedLayers.forEach(layer => {
 
+            const replaceDateFormat = DIALOG_ELEMENTS[dateFormatElemIdx].value[dateFormatValueIndex]
+
             //  Replace 'DATE' with current date
-            layer.name = replaceDate(layer.name)
+            const layerName = replaceDate(layer.name, replaceDateFormat)
+            layer.name = layerName
           })
   
           // Set the format and save path
