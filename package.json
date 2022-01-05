@@ -1,0 +1,31 @@
+{
+  "name": "exporter",
+  "description": "",
+  "version": "1.0.0",
+  "engines": {
+    "sketch": ">=49.0"
+  },
+  "skpm": {
+    "name": "exporter",
+    "manifest": "src/manifest.json",
+    "main": "exporter.sketchplugin",
+    "assets": [
+      "assets/**/*"
+    ],
+    "sketch-assets-file": "sketch-assets/icons.sketch"
+  },
+  "scripts": {
+    "build": "skpm-build",
+    "watch": "skpm-build --watch",
+    "start": "skpm-build --watch --run",
+    "postinstall": "npm run build && skpm-link",
+    "debugger": "skpm log -f"
+  },
+  "devDependencies": {
+    "@skpm/builder": "^0.8.0",
+    "jest": "^26.1.0",
+    "jest-esm-transformer": "^1.0.0",
+    "skpm": "^1.3.1"
+  },
+  "author": "Yossi Tsafar <yositsafar@gmail.com>"
+}

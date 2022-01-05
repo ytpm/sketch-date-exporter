@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sketch-hq/SketchAPI/develop/docs/sketch-plugin-manifest-schema.json",
+  "icon": "icon.png",
+  "name": "Expoter",
+  "identifier": "com.playmania.sketch.date-exporter",
+  "commands": [
+    {
+      "name": "Date Exporter",
+      "identifier": "date-exporter",
+      "script": "__rename-exporter.js",
+      "shortcut": "ctrl shift e"
+    }
+  ],
+  "menu": {
+    "title": "Date Exporter",
+    "items": [
+      "date-exporter"
+    ]
+  },
+  "version": "1.0.0",
+  "description": "",
+  "disableCocoaScriptPreprocessor": true,
+  "appcast": "https://raw.githubusercontent.com//master/.appcast.xml",
+  "author": "Yossi Tsafar",
+  "authorEmail": "yositsafar@gmail.com"
+}
